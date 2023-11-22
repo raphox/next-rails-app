@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   get 'static_pages/index'
   scope '/api' do
-    resources :posts, as: 'api_posts'
+    resources :posts
   end
 
   match '/:resource/:id(/*others)', to: 'static_pages#index', via: :all
