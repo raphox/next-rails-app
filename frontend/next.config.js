@@ -1,12 +1,12 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'export',
+  output: "export",
   trailingSlash: true,
-  distDir: "../public",
+  distDir: process.argv[2] === "build" ? "../public" : ".next",
   images: {
     unoptimized: true,
   },
   reactStrictMode: true,
-}
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;

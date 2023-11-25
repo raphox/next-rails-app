@@ -1,9 +1,9 @@
 import Link from "next/link";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { api } from "@/services";
-import PostForm from "./_components/PostForm";
+import PostForm from "@/components/PostForm";
 
 export default function PostNewPage() {
   const router = useRouter();
@@ -33,11 +33,7 @@ export default function PostNewPage() {
     <>
       <h1>New posts</h1>
 
-      <PostForm
-        isLoading={isCreating}
-        data={{}}
-        onSubmit={handleCreate}
-      />
+      <PostForm isLoading={isCreating} data={{}} onSubmit={handleCreate} />
 
       <br />
 

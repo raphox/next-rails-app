@@ -3,7 +3,7 @@ import { useSearchParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 
 import { api } from "@/services";
-import Post from "./_components/Post";
+import Post from "@/components/Post";
 
 export default function PostPage() {
   const searchParams = useSearchParams();

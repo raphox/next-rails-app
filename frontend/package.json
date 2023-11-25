@@ -19,6 +19,7 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
+    "@tanstack/react-query-devtools": "^5.8.7",
     "eslint": "^8",
     "eslint-config-next": "14.0.3",
     "hygen": "^6.2.11",

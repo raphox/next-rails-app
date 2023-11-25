@@ -1,21 +1,12 @@
-import { useState } from "react";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { Providers } from "@/provider";
 
-export default function App({ Component, pageProps }) {
-  const [queryClient] = useState(
-    () =>
-      new QueryClient({
-        defaultOptions: {
-          queries: {
-            refetchOnWindowFocus: false,
-          },
-        },
-      })
-  );
+export default function MyApp({ Component, pageProps }) {
+  // Use the layout defined at the page level, if available
+  const getLayout = Component.getLayout || ((page) => page);
 
-  return (
-    <QueryClientProvider client={queryClient}>
+  return getLayout(
+    <Providers>
       <Component {...pageProps} />
-    </QueryClientProvider>
+    </Providers>
   );
 }

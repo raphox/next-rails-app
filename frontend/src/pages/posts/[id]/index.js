@@ -1,10 +1,10 @@
 import Link from "next/link";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useParams, useSearchParams } from "next/navigation";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { api } from "@/services";
-import Post from "../_components/Post";
+import Post from "@/components/Post";
 
 export default function PostShowPage() {
   const router = useRouter();

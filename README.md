@@ -1,24 +1,49 @@
-# README
+# Gem [next_rails_scaffold](https://github.com/raphox/next_rails_scaffold) sample app
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## Setup
 
-Things you may want to cover:
+Create the Rails app:
 
-* Ruby version
+```
+rails new my_api --api
+```
 
-* System dependencies
+Install dependencies:
 
-* Configuration
+```
+# Uncomment the `gem "rack-cors"` line in the Gemfile.
+bundle add foreman next_rails_scaffold --group "development"
+```
 
-* Database creation
+Allow to local environment to access the Rails app from any resource.:
 
-* Database initialization
+```ruby
+# config/initializers/cors.rb
 
-* How to run the test suite
+Rails.application.config.middleware.insert_before 0, Rack::Cors do
+  allow do
+    origins Rails.env.local? ? "*" : "example.com" # Change `example.com` as you need.
 
-* Services (job queues, cache servers, search engines, etc.)
+    resource "*",
+      headers: :any,
+      methods: [:get, :post, :put, :patch, :delete, :options, :head]
+  end
+end
+```
 
-* Deployment instructions
+Create your `Procfile.local`:
 
-* ...
+```
+# Procfile.local
+
+api: bundle exec rails server -p $PORT -b 0.0.0.0
+next: cd ./frontend && NEXT_PUBLIC_API_URL=http://0.0.0.0:$(( PORT - 100 ))/api yarn dev -p $PORT -H 0.0.0.0
+```
+
+## Running
+
+After to [setup](#setup), run to following command to start the Rails and Next.js applications:
+
+```
+foreman start -f Procfile.local --port=8000
+```

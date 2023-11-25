@@ -4,7 +4,7 @@ import { useParams } from "next/navigation";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { api } from "@/services";
-import PostForm from "../_components/PostForm";
+import PostForm from "@/components/PostForm";
 
 export default function PostEditPage() {
   const params = useParams();
@@ -50,11 +50,7 @@ export default function PostEditPage() {
 
       <h1>Editing posts</h1>
 
-      <PostForm
-        isLoading={isUpdating}
-        data={post}
-        onSubmit={handleUpdate}
-      />
+      <PostForm isLoading={isUpdating} data={post} onSubmit={handleUpdate} />
 
       <br />
 
