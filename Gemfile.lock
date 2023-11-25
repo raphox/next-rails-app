@@ -120,7 +120,7 @@ GEM
       timeout
     net-smtp (0.4.0)
       net-protocol
-    next_rails_scaffold (0.1.8)
+    next_rails_scaffold (0.1.10)
       rails (~> 7.1.2)
     nio4r (2.6.0)
     nokogiri (1.15.4-aarch64-linux)
@@ -199,7 +199,7 @@ PLATFORMS
 DEPENDENCIES
   bootsnap
   debug
-  next_rails_scaffold (~> 0.1.8)
+  next_rails_scaffold (~> 0.1.10)
   puma (>= 5.0)
   rails (~> 7.1.2)
   sqlite3 (~> 1.4)

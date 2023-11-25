@@ -45,5 +45,4 @@ group :development do
   # gem "spring"
 end
 
-
-gem "next_rails_scaffold", "~> 0.1.8"
+gem "next_rails_scaffold", "~> 0.1.10"

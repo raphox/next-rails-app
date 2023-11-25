@@ -1,10 +1,7 @@
 Rails.application.routes.draw do
-  get 'static_pages/index'
   scope '/api' do
     resources :posts
   end
-
-  match '/:resource/:id(/*others)', to: 'static_pages#index', via: :all
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
