@@ -1,25 +1,25 @@
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { useQuery } from "@tanstack/react-query";
 
-import { api } from "@/services";
+import { useResource } from "@/hooks/resources";
 import Post from "@/components/Post";
 
 export default function PostPage() {
   const searchParams = useSearchParams();
   const notice = searchParams.get("notice");
   const {
-    isPending,
-    error,
     data: posts,
-  } = useQuery({
-    queryKey: ["posts"],
-    queryFn: () => api.get("/posts").then((res) => res.data),
+    isPending,
+    exception,
+  } = useResource("/posts", {
+    queryKey: ["/posts"],
   });
 
-  if (isPending) return "Loading...";
-
-  if (error) return "An error has occurred: " + error.message;
+  if (isPending) {
+    return "Loading...";
+  } else if (exception) {
+    return "An error has occurred: " + exception.message;
+  }
 
   return (
     <>
@@ -32,13 +32,13 @@ export default function PostPage() {
           <div key={post.id} id={`post_${post.id}`}>
             <Post {...post} />
             <p>
-              <Link href={`/posts/${post.id}`}>Show this posts</Link>
+              <Link href={`/posts/${post.id}`}>Show this post</Link>
             </p>
           </div>
         ))}
       </div>
 
-      <Link href={`/posts/new`}>New posts</Link>
+      <Link href={`/posts/new`}>New post</Link>
     </>
   );
 }

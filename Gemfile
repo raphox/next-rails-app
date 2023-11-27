@@ -45,5 +45,5 @@ group :development do
   # gem "spring"
 
   gem "foreman", "~> 0.87.2"
-  gem "next_rails_scaffold", "~> 0.1.10"
+  gem "next_rails_scaffold", "~> 0.1.11"
 end

@@ -1,4 +1,4 @@
-import { Providers } from "@/provider";
+import { Providers } from "@/providers";
 
 export default function MyApp({ Component, pageProps }) {
   // Use the layout defined at the page level, if available

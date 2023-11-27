@@ -1,61 +1,69 @@
-import { useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { api } from "@/services";
-import PostForm from "@/components/PostForm";
+import FormProvider from "@/components/FormProvider";
+import PostForm, { resolver } from "@/components/PostForm";
+import { useResource } from "@/hooks/resources";
 
 export default function PostEditPage() {
   const params = useParams();
-  const [notice, setNotice] = useState();
   const queryClient = useQueryClient();
   const postId = params?.id;
 
   const {
-    isPending,
-    error,
-    data: post,
-  } = useQuery({
-    queryKey: ["posts", postId],
-    queryFn: () => api.get(`/posts/${params.id}`).then((res) => res.data),
-    enabled: !!postId,
-  });
-
-  const { isPending: isUpdating, mutate } = useMutation({
+    isPending: isUpdating,
+    isSuccess,
+    mutate,
+  } = useMutation({
     mutationFn: (data) => {
       return api.put(`/posts/${postId}`, data);
     },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["posts"] });
+    },
   });
 
-  const handleUpdate = (data) => {
-    mutate(data, {
-      onSuccess: (result) => {
-        queryClient.invalidateQueries({ queryKey: ["posts"] });
-        setNotice("Updated with success.");
-      },
-      onError: (error) => {
-        alert(`Error: ${JSON.stringify(error)}`);
-      },
-    });
-  };
+  const { isPending, exception, ...resource } = useResource(
+    `/posts/${postId}`,
+    {
+      queryKey: ["posts", postId],
+      mutate,
+    }
+  );
 
-  if (isPending) return "Loading...";
-
-  if (error) return "An error has occurred: " + error.message;
+  if (isPending) {
+    return "Loading...";
+  } else if (exception) {
+    return "An error has occurred: " + exception.message;
+  }
 
   return (
     <>
-      {notice && <p style={{ color: "green" }}>{notice}</p>}
+      {isSuccess && <p style={{ color: "green" }}>Updated with success.</p>}
 
-      <h1>Editing posts</h1>
+      <h1>Editing post</h1>
 
-      <PostForm isLoading={isUpdating} data={post} onSubmit={handleUpdate} />
+      <FormProvider
+        resolver={resolver}
+        serverError={resource.errors}
+        onSubmit={resource.handleMutate}
+        values={resource.data}
+      >
+        <PostForm />
+
+        <div>
+          <button disabled={isUpdating} type="submit">
+            Update
+          </button>
+        </div>
+      </FormProvider>
 
       <br />
 
       <div>
-        <Link href={`/posts/${post.id}`}>Show this posts</Link>
+        <Link href={`/posts/${postId}`}>Show this post</Link>
         {" | "}
         <Link href="/posts">Back to posts</Link>
       </div>
