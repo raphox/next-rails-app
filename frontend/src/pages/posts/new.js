@@ -3,7 +3,6 @@ import { useRouter } from "next/router";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { api } from "@/services";
-import { useResource } from "@/hooks/resources";
 import FormProvider from "@/components/FormProvider";
 import PostForm, { resolver } from "@/components/PostForm";
 
@@ -11,35 +10,22 @@ export default function PostNewPage() {
   const router = useRouter();
   const queryClient = useQueryClient();
 
-  const { isPending: isCreating, mutate } = useMutation({
-    mutationFn: (data) => {
-      return api.post("/posts", data);
-    },
-    onSuccess: ({ data: post }) => {
+  const { isPending: isCreating, mutateAsync } = useMutation({
+    mutationFn: (data) => api.post("/posts", data),
+    onSuccess: ({ data }) => {
       queryClient.invalidateQueries({ queryKey: ["posts"] });
       router.push({
-        pathname: `/posts/${post.id}`,
+        pathname: `/posts/${data.id}`,
         query: { notice: "Created with success." },
       });
     },
-  });
-
-  const resource = useResource("/posts", {
-    queryKey: ["/posts"],
-    loadResources: false,
-    mutate,
   });
 
   return (
     <>
       <h1>New post</h1>
 
-      <FormProvider
-        resolver={resolver}
-        serverError={resource.errors}
-        onSubmit={resource.handleMutate}
-        values={resource.data}
-      >
+      <FormProvider resolver={resolver} values={{}} onSubmit={mutateAsync}>
         <PostForm />
 
         <div>

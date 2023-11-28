@@ -1,24 +1,23 @@
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
+import { useQuery } from "@tanstack/react-query";
 
-import { useResource } from "@/hooks/resources";
+import { api } from "@/services";
 import Post from "@/components/Post";
 
 export default function PostPage() {
   const searchParams = useSearchParams();
   const notice = searchParams.get("notice");
-  const {
-    data: posts,
-    isPending,
-    exception,
-  } = useResource("/posts", {
-    queryKey: ["/posts"],
+
+  const { isPending, error, data } = useQuery({
+    queryFn: () => api.get("/posts").then((res) => res.data),
+    queryKey: ["posts"],
   });
 
   if (isPending) {
     return "Loading...";
-  } else if (exception) {
-    return "An error has occurred: " + exception.message;
+  } else if (error) {
+    return "An error has occurred: " + error.message;
   }
 
   return (
@@ -28,7 +27,7 @@ export default function PostPage() {
       <h1>Posts</h1>
 
       <div id="posts">
-        {posts.map((post) => (
+        {data.map((post) => (
           <div key={post.id} id={`post_${post.id}`}>
             <Post {...post} />
             <p>

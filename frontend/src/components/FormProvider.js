@@ -1,27 +1,35 @@
-import React, { useEffect } from "react";
-import { FormProvider as FormProviderBase, useForm } from "react-hook-form";
+import {
+  FormProvider as FormProviderBase,
+  useForm,
+  Form,
+} from "react-hook-form";
 
-export default function FormProvider({
-  children,
-  values,
-  resolver,
-  onSubmit,
-  serverError,
-}) {
-  const { setError, handleSubmit, ...formProps } = useForm({
+export default function FormProvider({ children, values, resolver, onSubmit }) {
+  const { setError, ...formProps } = useForm({
     values,
     resolver,
   });
 
-  useEffect(() => {
-    for (const attribute in serverError) {
-      setError(attribute, { type: "server", message: serverError[attribute] });
-    }
-  }, [serverError]);
+  const handleSubmit = ({ data }) => {
+    onSubmit(data).catch((error) => {
+      if (error.response.status === 422) {
+        const serverError = error.response.data;
+
+        for (const attribute in serverError) {
+          setError(attribute, {
+            type: "server",
+            message: serverError[attribute],
+          });
+        }
+      } else {
+        alert(`Error: ${JSON.stringify(error)}`);
+      }
+    });
+  };
 
   return (
     <FormProviderBase {...formProps}>
-      <form onSubmit={handleSubmit(onSubmit)}>{children}</form>
+      <Form onSubmit={handleSubmit}>{children}</Form>
     </FormProviderBase>
   );
 }

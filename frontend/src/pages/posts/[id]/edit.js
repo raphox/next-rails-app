@@ -1,11 +1,10 @@
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { api } from "@/services";
 import FormProvider from "@/components/FormProvider";
 import PostForm, { resolver } from "@/components/PostForm";
-import { useResource } from "@/hooks/resources";
 
 export default function PostEditPage() {
   const params = useParams();
@@ -15,28 +14,24 @@ export default function PostEditPage() {
   const {
     isPending: isUpdating,
     isSuccess,
-    mutate,
+    mutateAsync,
   } = useMutation({
-    mutationFn: (data) => {
-      return api.put(`/posts/${postId}`, data);
-    },
+    mutationFn: (data) => api.put(`/posts/${postId}`, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["posts"] });
     },
   });
 
-  const { isPending, exception, ...resource } = useResource(
-    `/posts/${postId}`,
-    {
-      queryKey: ["posts", postId],
-      mutate,
-    }
-  );
+  const { isPending, error, data } = useQuery({
+    queryFn: () => api.get(`/posts/${postId}`).then((res) => res.data),
+    queryKey: ["posts", postId],
+    enabled: !!postId,
+  });
 
   if (isPending) {
     return "Loading...";
-  } else if (exception) {
-    return "An error has occurred: " + exception.message;
+  } else if (error) {
+    return "An error has occurred: " + error.message;
   }
 
   return (
@@ -45,12 +40,7 @@ export default function PostEditPage() {
 
       <h1>Editing post</h1>
 
-      <FormProvider
-        resolver={resolver}
-        serverError={resource.errors}
-        onSubmit={resource.handleMutate}
-        values={resource.data}
-      >
+      <FormProvider resolver={resolver} values={data} onSubmit={mutateAsync}>
         <PostForm />
 
         <div>
