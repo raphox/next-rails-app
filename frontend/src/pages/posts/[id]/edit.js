@@ -3,7 +3,7 @@ import { useParams } from "next/navigation";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { api } from "@/services";
-import FormProvider from "@/components/FormProvider";
+import { FormProvider } from "@/providers";
 import PostForm, { resolver } from "@/components/PostForm";
 
 export default function PostEditPage() {
