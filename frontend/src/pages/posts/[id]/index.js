@@ -46,7 +46,7 @@ export default function PostShowPage() {
         <Link href={`/posts/${postId}/edit`}>Edit this post</Link>
         {" | "}
         <Link href="/posts">Back to posts</Link>{" "}
-        <button data={{ isLoading: isDeleting }} onClick={mutate}>
+        <button disabled={isDeleting} onClick={mutate}>
           Destroy this post
         </button>
       </div>

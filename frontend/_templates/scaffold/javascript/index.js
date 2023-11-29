@@ -10,9 +10,9 @@ module.exports = {
       return result;
     }, {});
 
-    human_name = h.inflection.humanize(args.name);
     class_name = h.inflection.classify(args.name);
-    plural_table_name = h.inflection.tableize(args.name);
+    human_name = h.inflection.humanize(class_name);
+    plural_table_name = h.inflection.tableize(class_name);
     singular_table_name = h.inflection.singularize(plural_table_name);
 
     return {
