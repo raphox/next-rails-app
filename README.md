@@ -12,7 +12,8 @@ Install dependencies:
 
 ```
 # Uncomment the `gem "rack-cors"` line in the Gemfile.
-bundle add foreman next_rails_scaffold --group "development"
+bundle add foreman --group "development"
+bundle add next_rails_scaffold
 ```
 
 Allow to local environment to access the Rails app from any resource.:
