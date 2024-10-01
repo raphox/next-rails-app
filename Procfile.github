@@ -1,0 +1,2 @@
+api: bundle exec rails server -p $PORT -b 0.0.0.0
+next: cd ./frontend && NEXT_PUBLIC_API_URL=https://$CODESPACE_NAME-$(( PORT - 100 )).app.github.dev/api yarn dev -p $PORT -H 0.0.0.0
