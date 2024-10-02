@@ -48,3 +48,5 @@ After to [setup](#setup), run to following command to start the Rails and Next.j
 ```
 foreman start -f Procfile.local --port=8000
 ```
+
+> **TIP:** Use `foreman start -f Procfile.github --port=8000` on Github.
