@@ -47,4 +47,4 @@ group :development do
   gem 'foreman', '~> 0.88.1'
 end
 
-gem 'next_rails_scaffold', '~> 0.1.11'
+gem 'next_rails_scaffold', '~> 0.2.0'
