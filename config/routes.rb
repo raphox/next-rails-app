@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
+  resource :session
+  resources :passwords, param: :token
+
   scope '/api' do
+    resources :users
     resources :posts
   end
 

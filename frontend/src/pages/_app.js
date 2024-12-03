@@ -1,3 +1,4 @@
+import Layout from "@/components/Layout";
 import { AppProvider } from "@/providers";
 
 export default function MyApp({ Component, pageProps }) {
@@ -6,7 +7,9 @@ export default function MyApp({ Component, pageProps }) {
 
   return getLayout(
     <AppProvider>
-      <Component {...pageProps} />
+      <Layout>
+        <Component {...pageProps} />
+      </Layout>
     </AppProvider>
   );
 }
