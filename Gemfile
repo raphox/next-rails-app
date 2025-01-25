@@ -46,5 +46,5 @@ group :development, :test do
   gem "rubocop-rails-omakase", require: false
 end
 
-gem "foreman", "~> 0.88.1", :group => :development
+gem "foreman", "~> 0.88.1", group: :development
 gem "next_rails_scaffold", "~> 0.3.1"
