@@ -5,6 +5,12 @@ class PostsController < ApplicationController
   def index
     @posts = Post.all
 
+    # if you need to paginate the results and need to include other especific posts
+    if params[:include_ids].present?
+      others = Post.where(id: params[:include_ids])
+      @posts = Post.from("(#{@posts.to_sql} UNION #{others.to_sql}) as posts")
+    end
+
     render json: @posts
   end
 
