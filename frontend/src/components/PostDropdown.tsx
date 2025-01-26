@@ -1,7 +1,7 @@
 import React from "react";
 
 import Select from "react-select";
-import { Control, Controller, FieldValues, useFormContext } from "react-hook-form";
+import { Controller, useFormContext } from "react-hook-form";
 import { useQuery } from "@tanstack/react-query";
 
 import { api } from "@/services";
@@ -41,7 +41,7 @@ const Dropdown: React.FC<DropdownProps> = ({ name="post_id", apiEndpoint = "/pos
           ref={ref}
           onBlur={onBlur}
           options={options}
-          isDisabled={isPending}
+          isDisabled={isPending || !!error}
           placeholder={isPending ? "Loading..." : "Select a post"}
           value={options?.find((option) => option.value === value)}
           onChange={(selectedOption) => onChange(String(selectedOption?.value))}

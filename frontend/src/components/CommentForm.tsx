@@ -4,7 +4,7 @@ import { useFormContext } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 
-import PostDropDown from "./PostDropDown";
+import PostDropDown from "./PostDropdown";
 
 const schema = z.object({
   post_id: z.string(),
